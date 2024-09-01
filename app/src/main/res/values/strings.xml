@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Game Helper</string>
+    <string name="accessibility_service_description">Bla bla</string>
+    <string name="accessibility_service_name">My Service</string>
 </resources>

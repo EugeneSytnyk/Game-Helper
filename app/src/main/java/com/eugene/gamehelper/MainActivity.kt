@@ -9,15 +9,18 @@ import android.media.Image
 import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.Surface
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.eugene.gamehelper.utils.convertImageTo2DArray
 import com.eugene.gamehelper.utils.intTo4ByteHexString
+
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -33,10 +36,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-
-        mediaProjectionManager =
-            getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-        startScreenCapture()
+        checkAccessibilityServicePermission()
+//        mediaProjectionManager =
+//            getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+//        startScreenCapture()
     }
 
     private fun startScreenCapture() {
@@ -108,5 +111,23 @@ class MainActivity : AppCompatActivity() {
         imageReader?.close()
 
         stopService(Intent(this, ScreenCaptureService::class.java))
+    }
+
+    fun checkAccessibilityServicePermission() {
+        var access = 0
+        try {
+            access = Settings.Secure.getInt(
+                this.contentResolver,
+                Settings.Secure.ACCESSIBILITY_ENABLED
+            )
+        } catch (e: Settings.SettingNotFoundException) {
+            e.printStackTrace()
+            //put a Toast
+        }
+        if (access == 0) {
+            val myIntent: Intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(myIntent)
+        }
     }
 }
