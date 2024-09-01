@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setContentView(R.layout.activity_main)
+
         mediaProjectionManager =
             getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
         startScreenCapture()
@@ -89,7 +91,12 @@ class MainActivity : AppCompatActivity() {
 
         val pixel = pixels[yCenter][xCenter]
 
-        Log.d("MYOWNTAG", intTo4ByteHexString(pixel))
+        val leftTop = pixels[pixels.size - 1][200]
+        val leftBottom = pixels[pixels.size - 1][pixels[0].size - 1]
+        val rightTop = pixels[0][0]
+        val rightBottom = pixels[0][pixels[0].size - 1]
+
+        Log.d("MYOWNTAG", intTo4ByteHexString(leftTop) + " " + intTo4ByteHexString(leftBottom) + " " + intTo4ByteHexString(rightTop) + " " + intTo4ByteHexString(rightBottom))
 
         // You could convert this data to a bitmap, apply image processing, stream it, etc.
     }
