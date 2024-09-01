@@ -4,24 +4,28 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.accessibilityservice.GestureDescription.StrokeDescription
 import android.graphics.Path
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 
 class AutoClickService : AccessibilityService() {
+    override fun onInterrupt() {}
 
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
 
-    //apparently this method is called every time a event occurs
-    override fun onAccessibilityEvent(accessibilityEvent: AccessibilityEvent) {
-        Log.d("MYOWNTAG", "event occurred")
+    override fun onCreate() {
+        super.onCreate()
+        Log.d("MYOWNTAG", "onCreate")
+        click()
     }
 
-
-    public override fun onServiceConnected() {
-        super.onServiceConnected()
-       // autoClick(2000, 100, 950, 581)
-    }
-
-    override fun onInterrupt() {
+    private fun click() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            autoClick(0, 100, 500, 500)
+            Log.d("MYOWNTAG", "clicked")
+            click()
+        }, 5000)
     }
 
     private fun autoClick(startTimeMs: Int, durationMs: Int, x: Int, y: Int) {
