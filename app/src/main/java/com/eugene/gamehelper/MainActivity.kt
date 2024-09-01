@@ -15,9 +15,9 @@ import android.os.Looper
 import android.util.Log
 import android.view.Surface
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.eugene.gamehelper.utils.convertImageTo2DArray
 import com.eugene.gamehelper.utils.intTo4ByteHexString
-import java.nio.ByteBuffer
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == SCREEN_CAPTURE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val serviceIntent = Intent(this, ScreenCaptureService::class.java)
-            startForegroundService(serviceIntent)
+            ContextCompat.startForegroundService(this, serviceIntent)
 
             Handler(Looper.getMainLooper()).postDelayed({
                 mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data!!)
