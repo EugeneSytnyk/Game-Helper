@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.eugene.gamehelper.system.ScreenCaptureService
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.eugene.gamehelper
+package com.eugene.gamehelper.system
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription

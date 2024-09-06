@@ -25,12 +25,12 @@
         </activity>
 
         <service
-            android:name=".ScreenCaptureService"
+            android:name=".system.ScreenCaptureService"
             android:foregroundServiceType="mediaProjection"
             android:exported="false"
             tools:ignore="ForegroundServicePermission" />
 
-        <service android:name=".ClickService"
+        <service android:name=".system.ClickService"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:label="@string/accessibility_service_name">

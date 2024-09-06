@@ -1,4 +1,4 @@
-package com.eugene.gamehelper
+package com.eugene.gamehelper.system
 
 import android.app.Activity
 import android.app.Notification
@@ -20,6 +20,8 @@ import android.os.IBinder
 import android.util.Log
 import android.view.Surface
 import androidx.core.app.NotificationCompat
+import com.eugene.gamehelper.MainActivity
+import com.eugene.gamehelper.R
 import com.eugene.gamehelper.utils.convertImageTo2DArray
 
 class ScreenCaptureService : Service() {
