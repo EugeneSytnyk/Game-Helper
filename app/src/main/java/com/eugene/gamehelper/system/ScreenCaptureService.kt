@@ -17,6 +17,7 @@ import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import android.view.Surface
 import androidx.core.app.NotificationCompat
 import com.eugene.gamehelper.MainActivity
@@ -31,6 +32,7 @@ import kotlinx.coroutines.launch
 class ScreenCaptureService : Service() {
 
     companion object {
+        private val TAG = this::class.simpleName
         private const val NOTIFICATION_CHANNEL_ID = "NOTIFICATION_CHANNEL_ID"
         private const val NOTIFICATION_CHANNEL_NAME = "Screen Capture Service"
     }
@@ -124,6 +126,7 @@ class ScreenCaptureService : Service() {
     }
 
     private suspend fun processImage(image: Image) {
+        Log.d(TAG, "processImage")
         val pixels = image.toPixelMap()
         val screenModel = ScreenModel(pixels)
         ScreenChannel.channel.emit(screenModel)

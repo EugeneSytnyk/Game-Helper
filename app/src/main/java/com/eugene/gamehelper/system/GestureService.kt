@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.accessibilityservice.GestureDescription.StrokeDescription
 import android.graphics.Path
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.eugene.gamehelper.model.Event
 import kotlinx.coroutines.CoroutineScope
@@ -13,6 +14,10 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class GestureService : AccessibilityService() {
+
+    companion object {
+        private val TAG = this::class.simpleName
+    }
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
@@ -35,6 +40,7 @@ class GestureService : AccessibilityService() {
     }
 
     private fun processEvent(event: Event) {
+        Log.d(TAG, "processEvent: $event")
         when (event) {
             is Event.ClickEvent -> {
                 click(0, event.duration, event.x, event.y)
