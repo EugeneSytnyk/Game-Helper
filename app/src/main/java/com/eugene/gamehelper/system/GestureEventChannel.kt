@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 object GestureEventChannel {
 
-    val channel: MutableSharedFlow<Event> = MutableSharedFlow()
+    val channel: MutableSharedFlow<Event> = MutableSharedFlow(extraBufferCapacity = 1)
 }

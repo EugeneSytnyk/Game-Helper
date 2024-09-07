@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 object ScreenChannel {
 
-    val channel: MutableSharedFlow<ScreenModel> = MutableSharedFlow()
+    val channel: MutableSharedFlow<ScreenModel> = MutableSharedFlow(extraBufferCapacity = 1)
 }
