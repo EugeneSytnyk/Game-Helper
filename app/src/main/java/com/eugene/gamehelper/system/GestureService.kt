@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class GestureService : AccessibilityService() {
 
     companion object {
-        private val TAG = this::class.simpleName
+        private val TAG = GestureService::class.simpleName
     }
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)

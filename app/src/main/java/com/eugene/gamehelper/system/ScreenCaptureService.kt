@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 class ScreenCaptureService : Service() {
 
     companion object {
-        private val TAG = this::class.simpleName
+        private val TAG = ScreenCaptureService::class.simpleName
         private const val NOTIFICATION_CHANNEL_ID = "NOTIFICATION_CHANNEL_ID"
         private const val NOTIFICATION_CHANNEL_NAME = "Screen Capture Service"
     }
@@ -115,20 +115,20 @@ class ScreenCaptureService : Service() {
         )
 
         imageReader?.setOnImageAvailableListener({ reader ->
-            serviceScope.launch(Dispatchers.Default) {
-                val image: Image? = reader.acquireLatestImage()
-                image?.let {
-                    processImage(it)
-                    it.close()
-                }
+            val image: Image? = reader.acquireLatestImage()
+            image?.let {
+                val pixels = image.toPixelMap()
+                processImage(pixels)
+                it.close()
             }
         }, null)
     }
 
-    private suspend fun processImage(image: Image) {
+    private fun processImage(pixels: Array<IntArray>) {
         Log.d(TAG, "processImage")
-        val pixels = image.toPixelMap()
-        val screenModel = ScreenModel(pixels)
-        ScreenChannel.channel.emit(screenModel)
+        serviceScope.launch(Dispatchers.Default) {
+            val screenModel = ScreenModel(pixels)
+            ScreenChannel.channel.emit(screenModel)
+        }
     }
 }
