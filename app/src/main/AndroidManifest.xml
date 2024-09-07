@@ -30,7 +30,7 @@
             android:exported="false"
             tools:ignore="ForegroundServicePermission" />
 
-        <service android:name=".system.ClickService"
+        <service android:name=".system.GestureService"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:label="@string/accessibility_service_name">

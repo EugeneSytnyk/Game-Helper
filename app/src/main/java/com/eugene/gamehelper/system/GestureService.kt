@@ -5,11 +5,42 @@ import android.accessibilityservice.GestureDescription
 import android.accessibilityservice.GestureDescription.StrokeDescription
 import android.graphics.Path
 import android.view.accessibility.AccessibilityEvent
+import com.eugene.gamehelper.model.Event
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
-class ClickService : AccessibilityService() {
+class GestureService : AccessibilityService() {
+
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
     override fun onInterrupt() {}
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
+
+    override fun onCreate() {
+        super.onCreate()
+        serviceScope.launch {
+            GestureEventChannel.channel.collect {
+                processEvent(it)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        serviceScope.cancel()
+    }
+
+    private fun processEvent(event: Event) {
+        when (event) {
+            is Event.ClickEvent -> {
+                click(0, event.duration, event.x, event.y)
+            }
+        }
+    }
 
     private fun click(startTimeMs: Int, durationMs: Int, x: Int, y: Int) {
         dispatchGesture(gestureDescription(startTimeMs, durationMs, x, y), null, null)

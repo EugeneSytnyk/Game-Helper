@@ -17,12 +17,16 @@ import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import android.view.Surface
 import androidx.core.app.NotificationCompat
 import com.eugene.gamehelper.MainActivity
 import com.eugene.gamehelper.R
-import com.eugene.gamehelper.utils.convertImageTo2DArray
+import com.eugene.gamehelper.model.ScreenModel
+import com.eugene.gamehelper.utils.toPixelMap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 class ScreenCaptureService : Service() {
 
@@ -36,9 +40,12 @@ class ScreenCaptureService : Service() {
     private var virtualDisplay: VirtualDisplay? = null
     private var imageReader: ImageReader? = null
 
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
     override fun onCreate() {
         super.onCreate()
-        mediaProjectionManager = getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+        mediaProjectionManager =
+            getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -106,19 +113,19 @@ class ScreenCaptureService : Service() {
         )
 
         imageReader?.setOnImageAvailableListener({ reader ->
-            val image: Image? = reader.acquireLatestImage()
-            image?.let {
-                processImage(it)
-                it.close()
+            serviceScope.launch(Dispatchers.Default) {
+                val image: Image? = reader.acquireLatestImage()
+                image?.let {
+                    processImage(it)
+                    it.close()
+                }
             }
         }, null)
     }
 
-    private fun processImage(image: Image) {
-        val pixels = convertImageTo2DArray(image)
-        val yCenter = pixels.size / 2
-        val xCenter = pixels[0].size / 2
-
-        Log.d("MYOWNTAG", "Working")
+    private suspend fun processImage(image: Image) {
+        val pixels = image.toPixelMap()
+        val screenModel = ScreenModel(pixels)
+        ScreenChannel.channel.emit(screenModel)
     }
 }
