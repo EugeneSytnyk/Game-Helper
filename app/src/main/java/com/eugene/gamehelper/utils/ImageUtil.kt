@@ -5,7 +5,7 @@ import android.media.Image
 
 fun Image.toPixelMap(): Array<IntArray> {
     if (this.format != PixelFormat.RGBA_8888) {
-        throw IllegalArgumentException("this format must be PixelFormat.RGBA_8888")
+        error("Image format must be PixelFormat.RGBA_8888")
     }
 
     val width = this.width
