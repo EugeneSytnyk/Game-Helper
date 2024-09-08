@@ -1,7 +1,7 @@
 package com.eugene.gamehelper.model
 
 class ScreenModel(
-    private val pixels: Array<IntArray>
+    val pixels: Array<IntArray>
 ) {
 
     fun getPixel(x: Int, y: Int): Int {

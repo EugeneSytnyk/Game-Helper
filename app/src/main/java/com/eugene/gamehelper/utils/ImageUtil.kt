@@ -1,7 +1,13 @@
 package com.eugene.gamehelper.utils
 
+import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.PixelFormat
 import android.media.Image
+import android.os.Environment
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 fun Image.toPixelMap(): Array<IntArray> {
     if (this.format != PixelFormat.RGBA_8888) {
@@ -44,4 +50,29 @@ fun Int.toByteHexString(): String {
         (this shr 8) and 0xFF,
         this and 0xFF
     )
+}
+
+fun Context.saveImageFromPixelArray(pixelArray: Array<IntArray>, fileName: String) {
+    val height = pixelArray.size
+    val width = pixelArray[0].size
+
+    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+
+    for (x in 0 until width) {
+        for (y in 0 until height) {
+            bitmap.setPixel(x, y, pixelArray[y][x])
+        }
+    }
+
+    try {
+        val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "$fileName.png")
+
+        FileOutputStream(file).use { outputStream ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        }
+
+        println("Image saved successfully: ${file.absolutePath}")
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
 }

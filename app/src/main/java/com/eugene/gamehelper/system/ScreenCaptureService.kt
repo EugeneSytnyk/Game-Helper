@@ -100,8 +100,8 @@ class ScreenCaptureService : Service() {
 
     private fun setupVirtualDisplay() {
         val metrics = resources.displayMetrics
-        val screenWidth = metrics.widthPixels
-        val screenHeight = metrics.heightPixels
+        val screenWidth = metrics.widthPixels / 5
+        val screenHeight = metrics.heightPixels / 5
         val screenDensity = metrics.densityDpi
 
         imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 2)

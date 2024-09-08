@@ -1,9 +1,9 @@
 package com.eugene.gamehelper.system
 
 import com.eugene.gamehelper.model.ScreenModel
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 object ScreenChannel {
 
-    val channel: MutableSharedFlow<ScreenModel> = MutableSharedFlow(extraBufferCapacity = 1)
+    val channel: MutableStateFlow<ScreenModel> = MutableStateFlow(ScreenModel(emptyArray()))
 }
