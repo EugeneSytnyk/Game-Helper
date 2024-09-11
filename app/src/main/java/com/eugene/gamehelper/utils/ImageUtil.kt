@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.PixelFormat
 import android.media.Image
 import android.os.Environment
+import com.eugene.gamehelper.model.ScreenModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -25,7 +26,7 @@ fun Image.toPixelMap(): Array<IntArray> {
 
     val pixelArray = Array(height) { IntArray(width) }
 
-    for (y in 0 until height) {
+    for (y in (0 until height)) {
         for (x in 0 until width) {
             val offset = (y * rowStride) + (x * pixelStride)
 
@@ -35,7 +36,7 @@ fun Image.toPixelMap(): Array<IntArray> {
             val a = buffer.get(offset + 3).toInt() and 0xFF
 
             val color = (a shl 24) or (r shl 16) or (g shl 8) or b
-            pixelArray[y][x] = color
+            pixelArray[height - y - 1][x] = color
         }
     }
 
@@ -52,15 +53,15 @@ fun Int.toByteHexString(): String {
     )
 }
 
-fun Context.saveImageFromPixelArray(pixelArray: Array<IntArray>, fileName: String) {
-    val height = pixelArray.size
-    val width = pixelArray[0].size
+fun Context.saveImageFromScreenModel(model: ScreenModel, fileName: String) {
+    val height = model.height
+    val width = model.width
 
     val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
     for (x in 0 until width) {
         for (y in 0 until height) {
-            bitmap.setPixel(x, y, pixelArray[y][x])
+            bitmap.setPixel(x, height - y - 1, model.getPixel(x, y))
         }
     }
 

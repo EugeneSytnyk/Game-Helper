@@ -128,6 +128,7 @@ class ScreenCaptureService : Service() {
         Log.d(TAG, "processImage")
         serviceScope.launch(Dispatchers.Default) {
             val screenModel = ScreenModel(pixels)
+            screenModel.topOffset = 77 // DEVICE SPECIFIC
             ScreenChannel.channel.emit(screenModel)
         }
     }

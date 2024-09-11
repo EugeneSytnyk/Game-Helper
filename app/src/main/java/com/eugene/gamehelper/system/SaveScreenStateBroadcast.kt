@@ -3,7 +3,7 @@ package com.eugene.gamehelper.system
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.eugene.gamehelper.utils.saveImageFromPixelArray
+import com.eugene.gamehelper.utils.saveImageFromScreenModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class SaveScreenStateBroadcast : BroadcastReceiver() {
             CoroutineScope(Dispatchers.IO).apply {
                 launch {
                     val timeStamp = System.currentTimeMillis().toString()
-                    context.saveImageFromPixelArray(ScreenChannel.channel.value.pixels, timeStamp)
+                    context.saveImageFromScreenModel(ScreenChannel.channel.value, timeStamp)
                 }
             }
         }
