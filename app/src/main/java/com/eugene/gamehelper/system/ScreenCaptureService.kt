@@ -45,12 +45,12 @@ class ScreenCaptureService : Service() {
     private var virtualDisplay: VirtualDisplay? = null
     private var imageReader: ImageReader? = null
 
-    private val birdGame = BirdGame(object : IOutputInteractionHandler {
-        override fun handle(event: Event) {
-            TODO("Not yet implemented")
+    private val birdGame = BirdGame(
+        object : IOutputInteractionHandler {
+            override fun handle(event: Event) {
+                GestureEventChannel.channel.tryEmit(event)
+            }
         }
-
-    }
     )
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -102,11 +102,8 @@ class ScreenCaptureService : Service() {
         val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, flags)
 
         return NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle("Screen Capture")
-            .setContentText("Screen capture in progress")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentIntent(pendingIntent)
-            .build()
+            .setContentTitle("Screen Capture").setContentText("Screen capture in progress")
+            .setSmallIcon(R.drawable.ic_launcher_foreground).setContentIntent(pendingIntent).build()
     }
 
     private fun setupVirtualDisplay() {
@@ -120,9 +117,13 @@ class ScreenCaptureService : Service() {
 
         virtualDisplay = mediaProjection?.createVirtualDisplay(
             "ScreenCapture",
-            screenWidth, screenHeight, screenDensity,
+            screenWidth,
+            screenHeight,
+            screenDensity,
             DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-            surface, null, null
+            surface,
+            null,
+            null
         )
 
         imageReader?.setOnImageAvailableListener({ reader ->
