@@ -22,6 +22,9 @@ import android.view.Surface
 import androidx.core.app.NotificationCompat
 import com.eugene.gamehelper.MainActivity
 import com.eugene.gamehelper.R
+import com.eugene.gamehelper.flappybird.BirdGame
+import com.eugene.gamehelper.game.IOutputInteractionHandler
+import com.eugene.gamehelper.model.Event
 import com.eugene.gamehelper.model.ScreenModel
 import com.eugene.gamehelper.utils.toPixelMap
 import kotlinx.coroutines.CoroutineScope
@@ -41,6 +44,14 @@ class ScreenCaptureService : Service() {
     private var mediaProjection: MediaProjection? = null
     private var virtualDisplay: VirtualDisplay? = null
     private var imageReader: ImageReader? = null
+
+    private val birdGame = BirdGame(object : IOutputInteractionHandler {
+        override fun handle(event: Event) {
+            TODO("Not yet implemented")
+        }
+
+    }
+    )
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
@@ -129,6 +140,7 @@ class ScreenCaptureService : Service() {
         serviceScope.launch(Dispatchers.Default) {
             val screenModel = ScreenModel(pixels)
             screenModel.topOffset = 77 // DEVICE SPECIFIC
+            birdGame.processScreenModel(screenModel)
             ScreenChannel.channel.emit(screenModel)
         }
     }

@@ -15,6 +15,7 @@ class BirdPositionReader {
     val birdX = 43
 
     fun processScreenModel(screenModel: ScreenModel) {
+        val oldBirdY = birdY
         var bottomBirdPosition = -1
         for (i in 0 until screenModel.height) {
             val blueChannel = screenModel.getPixel(birdX, i).blueChannel()
@@ -25,6 +26,6 @@ class BirdPositionReader {
                 break
             }
         }
-        Log.d("BirdPositionReader", "Y: $birdY")
+        if (birdY != oldBirdY) Log.d("BirdPositionReader", "New Y: $birdY")
     }
 }
