@@ -5,6 +5,6 @@ sealed interface Event {
     class ClickEvent(
         val x: Int,
         val y: Int,
-        val duration: Int = 50
+        val duration: Int = 30
     ) : Event
 }

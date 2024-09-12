@@ -3,6 +3,7 @@ package com.eugene.gamehelper.system
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.eugene.gamehelper.flappybird.BirdGame
 import com.eugene.gamehelper.utils.saveImageFromScreenModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +22,7 @@ class SaveScreenStateBroadcast : BroadcastReceiver() {
         if (action == ACTION) {
             CoroutineScope(Dispatchers.IO).apply {
                 launch {
+                    BirdGame.instace?.start()
                     val timeStamp = System.currentTimeMillis().toString()
                     context.saveImageFromScreenModel(ScreenChannel.channel.value, timeStamp)
                 }
