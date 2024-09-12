@@ -53,6 +53,12 @@ fun Int.toByteHexString(): String {
     )
 }
 
+fun Int.redChannel(): Int = (this shr 16) and 0xFF
+
+fun Int.greenChannel(): Int = (this shr 8) and 0xFF
+
+fun Int.blueChannel(): Int = this and 0xFF
+
 fun Context.saveImageFromScreenModel(model: ScreenModel, fileName: String) {
     val height = model.height
     val width = model.width
